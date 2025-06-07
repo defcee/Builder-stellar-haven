@@ -1,0 +1,243 @@
+/* Mobile Platform CSS for React Project */
+
+/* Platform Detection Classes */
+.platform-ios {
+  --safe-area-inset-top: env(safe-area-inset-top, 0px);
+  --safe-area-inset-right: env(safe-area-inset-right, 0px);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-inset-left: env(safe-area-inset-left, 0px);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.platform-android {
+  -webkit-font-smoothing: subpixel-antialiased;
+  --navigation-bar-height: 48px;
+}
+
+.capacitor-app {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.standalone-app {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* iOS Safe Area Support */
+.platform-ios .app-header {
+  padding-top: calc(16px + var(--safe-area-inset-top));
+}
+
+.platform-ios .app-content {
+  padding-bottom: calc(80px + var(--safe-area-inset-bottom));
+}
+
+/* Android Navigation Bar Support */
+.platform-android .app-content {
+  padding-bottom: calc(80px + var(--navigation-bar-height, 0px));
+}
+
+/* Mobile-First Button Styles */
+.mobile-button {
+  min-height: 48px;
+  min-width: 48px;
+  font-size: 16px;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.platform-ios .mobile-button {
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: -0.24px;
+}
+
+.platform-android .mobile-button {
+  border-radius: 4px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.25px;
+}
+
+.mobile-button:active {
+  transform: scale(0.98);
+}
+
+/* Mobile Input Styles */
+.mobile-input {
+  font-size: 16px; /* Prevent zoom on iOS */
+  min-height: 48px;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+.platform-ios .mobile-input {
+  background-color: rgb(242, 242, 247);
+  border: 1px solid rgb(242, 242, 247);
+}
+
+.platform-ios .mobile-input:focus {
+  background-color: rgb(255, 255, 255);
+  border-color: rgb(0, 122, 255);
+}
+
+.platform-android .mobile-input {
+  border-bottom: 2px solid rgb(224, 224, 224);
+  border-top: 1px solid rgb(224, 224, 224);
+  border-left: 1px solid rgb(224, 224, 224);
+  border-right: 1px solid rgb(224, 224, 224);
+  border-radius: 4px;
+}
+
+.platform-android .mobile-input:focus {
+  border-bottom-color: rgb(22, 163, 74);
+}
+
+/* Mobile Card Styles */
+.mobile-card {
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.15s ease;
+}
+
+.platform-ios .mobile-card {
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.platform-android .mobile-card {
+  border-radius: 8px;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Touch Optimizations */
+.touch-target {
+  min-height: 48px;
+  min-width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.touch-feedback:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+/* Scrolling Optimizations */
+.platform-ios .scrollable,
+.platform-android .scrollable {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Bottom Navigation */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgb(255, 255, 255);
+  border-top: 1px solid rgb(229, 231, 235);
+  z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.platform-ios .mobile-bottom-nav {
+  backdrop-filter: blur(20px);
+  background-color: rgba(255, 255, 255, 0.8);
+  border-top: 0.5px solid rgba(0, 0, 0, 0.3);
+}
+
+.platform-android .mobile-bottom-nav {
+  background-color: rgb(255, 255, 255);
+  border-top: 1px solid rgb(224, 224, 224);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .mobile-responsive {
+    padding: 16px 12px;
+  }
+
+  .mobile-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-button {
+    height: 48px;
+    font-size: 16px;
+  }
+
+  .mobile-input {
+    font-size: 16px;
+    padding: 14px 16px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .platform-ios .mobile-input {
+    background-color: rgb(28, 28, 30);
+    border-color: rgb(58, 58, 60);
+    color: rgb(255, 255, 255);
+  }
+
+  .platform-ios .mobile-bottom-nav {
+    background-color: rgba(28, 28, 30, 0.8);
+    border-top-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .platform-android .mobile-input {
+    background-color: rgb(33, 33, 33);
+    border-color: rgb(66, 66, 66);
+    color: rgb(255, 255, 255);
+  }
+
+  .platform-android .mobile-bottom-nav {
+    background-color: rgb(33, 33, 33);
+    border-top-color: rgb(66, 66, 66);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .mobile-button {
+    border: 2px solid;
+  }
+
+  .mobile-input {
+    border: 2px solid;
+  }
+}
+
+/* Focus styles for accessibility */
+.mobile-button:focus,
+.mobile-input:focus,
+.touch-target:focus {
+  outline: 2px solid rgb(22, 163, 74);
+  outline-offset: 2px;
+}

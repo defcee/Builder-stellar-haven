@@ -18,5 +18,10 @@ export default defineConfig({
     outDir: "dist",
     sourcemap: false,
     minify: "esbuild",
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, "index.html"),
+      },
+    },
   },
 });

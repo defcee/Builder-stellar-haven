@@ -3,12 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello world project</title>
+    <meta
+      name="description"
+      content="Bizzleap - Empowering farmers and small businesses to grow, connect, and thrive in the digital marketplace"
+    />
+    <meta name="theme-color" content="#16a34a" />
+    <title>Bizzleap - Welcome</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="src/css/welcome.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="public/placeholder.svg" />
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="src/js/welcome.js" as="script" />
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Bizzleap" />
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Bizzleap - Grow Your Business" />
+    <meta
+      property="og:description"
+      content="Empowering farmers and small businesses to grow, connect, and thrive in the digital marketplace"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://bizzleap.com" />
+    <meta property="og:image" content="public/placeholder.svg" />
   </head>
-
   <body>
-    <div id="root"></div>
+    <div id="app">
+      <!-- Loading State -->
+      <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Loading Bizzleap...</p>
+      </div>
+    </div>
 
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- JavaScript -->
+    <script src="src/js/welcome.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((registration) => {
+              console.log("SW registered: ", registration);
+            })
+            .catch((registrationError) => {
+              console.log("SW registration failed: ", registrationError);
+            });
+        });
+      }
+    </script>
   </body>
 </html>

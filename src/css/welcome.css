@@ -1,0 +1,588 @@
+/* Welcome Page CSS - Mobile First Design */
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.welcome-page {
+  font-family:
+    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: rgb(2, 8, 23);
+  background-color: rgb(255, 255, 255);
+}
+
+.welcome-container {
+  background-image: linear-gradient(
+    to right bottom,
+    rgb(240, 253, 244),
+    rgb(255, 255, 255),
+    rgb(239, 246, 255)
+  );
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile */
+}
+
+/* Header Styles */
+.welcome-header {
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+  position: relative;
+  overflow: hidden;
+}
+
+.header-background {
+  background-image: linear-gradient(
+    to right,
+    rgba(22, 163, 74, 0.05),
+    rgba(37, 99, 235, 0.05)
+  );
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.header-content {
+  padding: 32px 24px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* Logo Styles */
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(22, 163, 74);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+}
+
+.leaf-icon {
+  width: 20px;
+  height: 20px;
+  color: rgb(255, 255, 255);
+  stroke: currentColor;
+  fill: none;
+}
+
+.logo-text {
+  color: rgb(17, 24, 39);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 36px;
+}
+
+/* Tagline */
+.tagline {
+  color: rgb(75, 85, 99);
+  font-size: 18px;
+  line-height: 1.625;
+  margin: 0 auto;
+  max-width: 448px;
+}
+
+/* Mobile Badge */
+.mobile-badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: rgb(220, 252, 231);
+  border-radius: 50px;
+  color: rgb(21, 128, 61);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  margin-top: 16px;
+  padding: 2px 10px;
+  transition: all 0.15s ease;
+}
+
+.mobile-icon {
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+  stroke: currentColor;
+  fill: none;
+}
+
+/* Main Content */
+.welcome-main {
+  padding: 32px 24px;
+}
+
+/* Hero Section */
+.hero-section {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.cta-container {
+  margin-bottom: 24px;
+}
+
+.primary-button {
+  display: inline-flex;
+  align-items: center;
+  background-color: rgb(22, 163, 74);
+  border: none;
+  border-radius: 6px;
+  color: rgb(248, 250, 252);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 8px;
+  height: 44px;
+  justify-content: center;
+  line-height: 20px;
+  max-width: 320px;
+  padding: 0 32px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  width: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.primary-button:hover {
+  background-color: rgb(21, 128, 61);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(22, 163, 74, 0.3);
+}
+
+.primary-button:active,
+.primary-button.touching {
+  transform: translateY(0);
+  background-color: rgb(20, 120, 58);
+}
+
+.arrow-icon {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  margin-left: 8px;
+}
+
+.signin-text {
+  color: rgb(107, 114, 128);
+  font-size: 14px;
+  line-height: 20px;
+  margin-top: 16px;
+}
+
+.signin-link {
+  color: rgb(22, 163, 74);
+  font-weight: 500;
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+.signin-link:hover {
+  text-decoration: underline;
+}
+
+/* Section Titles */
+.section-title {
+  color: rgb(17, 24, 39);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+/* Features Section */
+.features-section {
+  margin-bottom: 48px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.feature-card {
+  background-color: rgb(255, 255, 255);
+  border-radius: 8px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  transition: all 0.15s ease;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.feature-card:hover {
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.feature-card:active,
+.feature-card.touching {
+  transform: translateY(0);
+}
+
+.feature-content {
+  padding: 24px;
+  text-align: center;
+}
+
+.feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: rgb(249, 250, 251);
+  margin-bottom: 12px;
+}
+
+.feature-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+}
+
+.feature-icon.green {
+  color: rgb(22, 163, 74);
+}
+
+.feature-icon.blue {
+  color: rgb(37, 99, 235);
+}
+
+.feature-icon.purple {
+  color: rgb(147, 51, 234);
+}
+
+.feature-icon.yellow {
+  color: rgb(245, 158, 11);
+}
+
+.feature-title {
+  font-weight: 600;
+  color: rgb(17, 24, 39);
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.feature-description {
+  font-size: 14px;
+  color: rgb(75, 85, 99);
+  line-height: 1.5;
+}
+
+/* Benefits Section */
+.benefits-section {
+  margin-bottom: 48px;
+}
+
+.benefits-card {
+  background-color: rgb(255, 255, 255);
+  border-radius: 8px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+.benefits-list {
+  display: grid;
+  gap: 12px;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.check-icon {
+  width: 20px;
+  height: 20px;
+  color: rgb(22, 163, 74);
+  stroke: currentColor;
+  fill: none;
+  flex-shrink: 0;
+}
+
+.benefit-item span {
+  color: rgb(55, 65, 81);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Social Proof Section */
+.social-proof-section {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.stats-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: rgb(75, 85, 99);
+}
+
+.stat-icon {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+}
+
+/* Final CTA Section */
+.final-cta-section {
+  text-align: center;
+  padding-bottom: 32px;
+}
+
+.cta-title {
+  color: rgb(17, 24, 39);
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* Toast Styles */
+.toaster {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  max-width: 420px;
+  width: 100%;
+  padding: 16px;
+  pointer-events: none;
+}
+
+.toast {
+  background-color: rgb(255, 255, 255);
+  border-radius: 8px;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  margin-bottom: 12px;
+  padding: 16px;
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 0.3s ease;
+}
+
+.toast.fade-out {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: rgb(107, 114, 128);
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast-success {
+  border-left: 4px solid rgb(22, 163, 74);
+}
+
+.toast-error {
+  border-left: 4px solid rgb(239, 68, 68);
+}
+
+.toast-info {
+  border-left: 4px solid rgb(59, 130, 246);
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .header-content {
+    padding: 24px 16px;
+  }
+
+  .welcome-main {
+    padding: 24px 16px;
+  }
+
+  .logo-text {
+    font-size: 24px;
+  }
+
+  .tagline {
+    font-size: 16px;
+  }
+
+  .section-title {
+    font-size: 20px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-container {
+    gap: 16px;
+  }
+
+  .toaster {
+    padding: 12px;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .primary-button {
+    height: 48px;
+    font-size: 16px;
+  }
+
+  .feature-content {
+    padding: 16px;
+  }
+
+  .benefits-card {
+    padding: 16px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .welcome-page {
+    color: rgb(243, 244, 246);
+    background-color: rgb(17, 24, 39);
+  }
+
+  .welcome-container {
+    background-image: linear-gradient(
+      to right bottom,
+      rgb(20, 83, 45),
+      rgb(17, 24, 39),
+      rgb(30, 58, 138)
+    );
+  }
+
+  .welcome-header {
+    background-color: rgb(31, 41, 55);
+  }
+
+  .logo-text,
+  .section-title,
+  .feature-title,
+  .cta-title {
+    color: rgb(243, 244, 246);
+  }
+
+  .feature-card,
+  .benefits-card,
+  .toast {
+    background-color: rgb(31, 41, 55);
+    border-color: rgb(55, 65, 81);
+  }
+
+  .feature-description,
+  .benefit-item span,
+  .tagline {
+    color: rgb(156, 163, 175);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .primary-button {
+    border: 2px solid rgb(255, 255, 255);
+  }
+
+  .feature-card,
+  .benefits-card {
+    border: 2px solid rgb(229, 231, 235);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .primary-button:hover,
+  .feature-card:hover {
+    transform: none;
+  }
+}
+
+/* Focus styles for accessibility */
+.primary-button:focus,
+.signin-link:focus,
+.feature-card:focus {
+  outline: 2px solid rgb(22, 163, 74);
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .toaster {
+    display: none;
+  }
+
+  .welcome-container {
+    background-image: none;
+    background-color: white;
+  }
+
+  .primary-button {
+    border: 1px solid black;
+    background-color: transparent;
+    color: black;
+  }
+}

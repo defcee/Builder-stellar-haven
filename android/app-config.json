@@ -1,0 +1,153 @@
+{
+  "android": {
+    "compileSdkVersion": 34,
+    "minSdkVersion": 21,
+    "targetSdkVersion": 34,
+    "versionCode": 1,
+    "versionName": "1.0.0",
+    "applicationId": "com.bizzleap.mobile",
+    "packageName": "com.bizzleap.mobile",
+    "permissions": [
+      "android.permission.INTERNET",
+      "android.permission.ACCESS_NETWORK_STATE",
+      "android.permission.ACCESS_WIFI_STATE",
+      "android.permission.CAMERA",
+      "android.permission.READ_EXTERNAL_STORAGE",
+      "android.permission.WRITE_EXTERNAL_STORAGE",
+      "android.permission.ACCESS_FINE_LOCATION",
+      "android.permission.ACCESS_COARSE_LOCATION",
+      "android.permission.VIBRATE",
+      "android.permission.WAKE_LOCK",
+      "android.permission.RECEIVE_BOOT_COMPLETED"
+    ],
+    "features": [
+      {
+        "name": "android.hardware.camera",
+        "required": false
+      },
+      {
+        "name": "android.hardware.camera.autofocus",
+        "required": false
+      },
+      {
+        "name": "android.hardware.location",
+        "required": false
+      },
+      {
+        "name": "android.hardware.location.gps",
+        "required": false
+      }
+    ],
+    "buildConfig": {
+      "debug": {
+        "applicationIdSuffix": ".debug",
+        "versionNameSuffix": "-debug"
+      },
+      "release": {
+        "minifyEnabled": true,
+        "shrinkResources": true,
+        "proguardFiles": ["proguard-android-optimize.txt", "proguard-rules.pro"]
+      }
+    },
+    "signing": {
+      "debug": {
+        "storeFile": "debug.keystore",
+        "storePassword": "android",
+        "keyAlias": "androiddebugkey",
+        "keyPassword": "android"
+      }
+    },
+    "dependencies": {
+      "implementation": [
+        "androidx.appcompat:appcompat:1.6.1",
+        "androidx.core:core-ktx:1.12.0",
+        "androidx.activity:activity-ktx:1.8.2",
+        "androidx.fragment:fragment-ktx:1.6.2",
+        "androidx.coordinatorlayout:coordinatorlayout:1.2.0",
+        "androidx.webkit:webkit:1.8.0",
+        "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0",
+        "com.google.android.material:material:1.11.0"
+      ]
+    },
+    "manifestPlaceholders": {
+      "appName": "Bizzleap",
+      "activity_main_label": "@string/title_activity_main"
+    },
+    "resources": {
+      "colors": {
+        "primary": "#16a34a",
+        "primary_dark": "#15803d",
+        "accent": "#22c55e",
+        "background": "#ffffff",
+        "surface": "#f8fafc",
+        "error": "#ef4444"
+      },
+      "strings": {
+        "app_name": "Bizzleap",
+        "title_activity_main": "Bizzleap",
+        "package_name": "com.bizzleap.mobile",
+        "custom_url_scheme": "bizzleap"
+      }
+    },
+    "proguard": {
+      "rules": [
+        "-keep class com.getcapacitor.** { *; }",
+        "-keep class com.capacitorjs.** { *; }",
+        "-keep class com.bizzleap.mobile.** { *; }",
+        "-keepclassmembers class * {",
+        "    @android.webkit.JavascriptInterface <methods>;",
+        "}",
+        "-keepattributes *Annotation*",
+        "-keepattributes SourceFile,LineNumberTable",
+        "-keep public class * extends java.lang.Exception"
+      ]
+    },
+    "notification": {
+      "icon": "ic_stat_icon_config_sample",
+      "iconColor": "#16a34a",
+      "sound": "default"
+    },
+    "deepLinks": [
+      {
+        "scheme": "bizzleap",
+        "host": "app"
+      },
+      {
+        "scheme": "https",
+        "host": "bizzleap.com"
+      }
+    ],
+    "intentFilters": [
+      {
+        "action": "android.intent.action.VIEW",
+        "category": [
+          "android.intent.category.DEFAULT",
+          "android.intent.category.BROWSABLE"
+        ],
+        "data": {
+          "scheme": "bizzleap"
+        }
+      }
+    ]
+  },
+  "build": {
+    "gradle": {
+      "version": "8.2.1",
+      "distributionUrl": "https://services.gradle.org/distributions/gradle-8.2.1-all.zip"
+    },
+    "androidGradlePlugin": "8.2.1",
+    "kotlin": "1.9.10"
+  },
+  "testing": {
+    "instrumentedTests": {
+      "runner": "androidx.test.runner.AndroidJUnitRunner",
+      "dependencies": [
+        "androidx.test.ext:junit:1.1.5",
+        "androidx.test.espresso:espresso-core:3.5.1"
+      ]
+    },
+    "unitTests": {
+      "dependencies": ["junit:junit:4.13.2"]
+    }
+  }
+}

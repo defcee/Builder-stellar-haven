@@ -85,7 +85,7 @@
     <link rel="preconnect" href="//fonts.gstatic.com" crossorigin />
   </head>
   <body>
-    <div id="app">
+    <div id="root">
       <!-- Loading State -->
       <div class="loading-container">
         <div class="loading-spinner"></div>
@@ -93,9 +93,8 @@
       </div>
     </div>
 
-    <!-- JavaScript -->
-    <script src="src/js/mobile-platform.js"></script>
-    <script src="src/js/welcome.js"></script>
+    <!-- React Entry Point -->
+    <script type="module" src="/src/main.tsx"></script>
 
     <!-- Capacitor App Scripts (only loaded in native app) -->
     <script>

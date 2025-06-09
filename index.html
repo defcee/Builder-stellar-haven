@@ -41,7 +41,20 @@
       name="twitter:description"
       content="Empowering farmers and small businesses to grow, connect, and thrive in the digital marketplace"
     />
+<<<<<<< HEAD
     <meta name="twitter:image" content="/placeholder.svg" />
+=======
+    <meta name="twitter:image" content="public/twitter-image.png" />
+
+    <!-- Security Headers -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:;"
+    />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+>>>>>>> 263cae8377c75ed9d1c8a67b02484a067224fe2c
 
     <!-- Performance Hints -->
     <meta http-equiv="x-dns-prefetch-control" content="on" />
@@ -98,7 +111,27 @@
       </style>
     </div>
 
+<<<<<<< HEAD
     <script type="module" src="/src/main.tsx"></script>
+=======
+    <!-- React Entry Point -->
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Capacitor App Scripts (only loaded in native app) -->
+    <script>
+      // Check if running in Capacitor
+      if (window.Capacitor) {
+        // Import Capacitor plugins
+        import(
+          "https://cdn.jsdelivr.net/npm/@capacitor/core@latest/dist/esm/index.js"
+        )
+          .then(({ Capacitor }) => {
+            console.log("Running in Capacitor:", Capacitor.getPlatform());
+          })
+          .catch(console.warn);
+      }
+    </script>
+>>>>>>> 263cae8377c75ed9d1c8a67b02484a067224fe2c
 
     <!-- Service Worker Registration -->
     <script>

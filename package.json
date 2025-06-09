@@ -6,10 +6,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "build:mobile": "vite build && npm run cap:sync",
+    "build": "tsc && vite build",
+    "build:mobile": "tsc && vite build",
     "preview": "vite preview",
     "serve": "vite preview --port 8080",
+    "typecheck": "tsc",
+    "format.fix": "prettier --write .",
+    "test": "vitest --run",
     "cap:init": "cap init",
     "cap:add:android": "cap add android",
     "cap:add:ios": "cap add ios",
@@ -23,9 +26,7 @@
     "ios:dev": "npm run cap:run:ios",
     "ios:build": "npm run cap:build:ios",
     "mobile:dev": "npm run serve",
-    "mobile:build": "npm run build",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "mobile:build": "npm run build"
   },
   "keywords": [
     "mobile",

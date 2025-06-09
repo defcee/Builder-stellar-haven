@@ -16,40 +16,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Bizzleap" />
     <meta name="msapplication-TileColor" content="#16a34a" />
-    <title>Bizzleap - Welcome</title>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="src/css/base.css" />
-    <link rel="stylesheet" href="src/css/mobile-platform.css" />
-    <link rel="stylesheet" href="src/css/welcome.css" />
+    <title>Bizzleap - Empowering Farmers & Small Businesses</title>
 
     <!-- Favicon and Icons -->
-    <link rel="icon" type="image/svg+xml" href="public/placeholder.svg" />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="public/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="public/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="public/favicon-16x16.png"
-    />
-    <link rel="mask-icon" href="public/safari-pinned-tab.svg" color="#16a34a" />
-
-    <!-- Preload critical resources -->
-    <link rel="preload" href="src/js/mobile-platform.js" as="script" />
-    <link rel="preload" href="src/js/welcome.js" as="script" />
+    <link rel="icon" type="image/svg+xml" href="/placeholder.svg" />
 
     <!-- PWA Meta Tags -->
-    <link rel="manifest" href="manifest.json" />
+    <link rel="manifest" href="/manifest.json" />
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Bizzleap - Grow Your Business" />
@@ -59,7 +32,7 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://bizzleap.com" />
-    <meta property="og:image" content="public/og-image.png" />
+    <meta property="og:image" content="/placeholder.svg" />
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -68,49 +41,64 @@
       name="twitter:description"
       content="Empowering farmers and small businesses to grow, connect, and thrive in the digital marketplace"
     />
-    <meta name="twitter:image" content="public/twitter-image.png" />
-
-    <!-- Security Headers -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:;"
-    />
-    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta name="twitter:image" content="/placeholder.svg" />
 
     <!-- Performance Hints -->
     <meta http-equiv="x-dns-prefetch-control" content="on" />
-    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-    <link rel="preconnect" href="//fonts.gstatic.com" crossorigin />
   </head>
   <body>
-    <div id="app">
+    <div id="root">
       <!-- Loading State -->
-      <div class="loading-container">
-        <div class="loading-spinner"></div>
-        <p>Loading Bizzleap...</p>
+      <div
+        style="
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(
+            to bottom right,
+            #dcfce7,
+            #ffffff,
+            #eff6ff
+          );
+          font-family:
+            -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto,
+            sans-serif;
+        "
+      >
+        <div
+          style="
+            width: 40px;
+            height: 40px;
+            border: 3px solid #16a34a;
+            border-top: 3px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+          "
+        ></div>
+        <p style="color: #374151; font-size: 16px; font-weight: 500; margin: 0">
+          Loading Bizzleap...
+        </p>
       </div>
+      <style>
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      </style>
     </div>
 
-    <!-- JavaScript -->
-    <script src="src/js/mobile-platform.js"></script>
-    <script src="src/js/welcome.js"></script>
-
-    <!-- Capacitor App Scripts (only loaded in native app) -->
-    <script>
-      // Check if running in Capacitor
-      if (window.Capacitor) {
-        // Import Capacitor plugins
-        import(
-          "https://cdn.jsdelivr.net/npm/@capacitor/core@latest/dist/esm/index.js"
-        )
-          .then(({ Capacitor }) => {
-            console.log("Running in Capacitor:", Capacitor.getPlatform());
-          })
-          .catch(console.warn);
-      }
-    </script>
+    <script type="module" src="/src/main.tsx"></script>
 
     <!-- Service Worker Registration -->
     <script>
@@ -120,22 +108,6 @@
             .register("/sw.js")
             .then((registration) => {
               console.log("SW registered: ", registration);
-
-              // Check for updates
-              registration.addEventListener("updatefound", () => {
-                const newWorker = registration.installing;
-                newWorker.addEventListener("statechange", () => {
-                  if (
-                    newWorker.state === "installed" &&
-                    navigator.serviceWorker.controller
-                  ) {
-                    // New content available
-                    if (confirm("New version available! Reload to update?")) {
-                      window.location.reload();
-                    }
-                  }
-                });
-              });
             })
             .catch((registrationError) => {
               console.log("SW registration failed: ", registrationError);
@@ -144,29 +116,18 @@
       }
     </script>
 
-    <!-- Install Prompt for PWA -->
+    <!-- PWA Install Prompt -->
     <script>
       let deferredPrompt;
 
       window.addEventListener("beforeinstallprompt", (e) => {
-        // Prevent Chrome 67 and earlier from automatically showing the prompt
         e.preventDefault();
-        // Stash the event so it can be triggered later
         deferredPrompt = e;
-
-        // Show install button (you can add this to your UI)
         console.log("PWA install prompt available");
       });
 
       window.addEventListener("appinstalled", (evt) => {
         console.log("PWA was installed");
-        // Track installation
-        if (window.gtag) {
-          gtag("event", "pwa_install", {
-            event_category: "engagement",
-            event_label: "PWA Installation",
-          });
-        }
       });
     </script>
 
@@ -174,37 +135,10 @@
     <script>
       window.addEventListener("error", (event) => {
         console.error("Global error:", event.error);
-        // You can send error reports here
       });
 
       window.addEventListener("unhandledrejection", (event) => {
         console.error("Unhandled promise rejection:", event.reason);
-        // You can send error reports here
-      });
-    </script>
-
-    <!-- Performance Monitoring -->
-    <script>
-      window.addEventListener("load", () => {
-        // Log performance metrics
-        if ("performance" in window) {
-          const perfData = performance.getEntriesByType("navigation")[0];
-          console.log(
-            "Page load time:",
-            perfData.loadEventEnd - perfData.loadEventStart,
-            "ms",
-          );
-
-          // Log to analytics if available
-          if (window.gtag) {
-            gtag("event", "timing_complete", {
-              name: "load",
-              value: Math.round(
-                perfData.loadEventEnd - perfData.loadEventStart,
-              ),
-            });
-          }
-        }
       });
     </script>
   </body>

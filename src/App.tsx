@@ -42,20 +42,12 @@ const App = () => (
           <Route path="/home" element={<Navigate to="/dashboard" replace />} />
           <Route path="/app" element={<Navigate to="/dashboard" replace />} />
 
-          {/* Placeholder routes for missing pages */}
-          <Route
-            path="/social-campaigns"
-            element={<Navigate to="/dashboard" replace />}
-          />
-          <Route path="/chat" element={<Navigate to="/dashboard" replace />} />
-          <Route
-            path="/feedback"
-            element={<Navigate to="/profile" replace />}
-          />
-          <Route
-            path="/add-product"
-            element={<Navigate to="/dashboard" replace />}
-          />
+          {/* Import missing pages */}
+          <Route path="/social-campaigns" element={<SocialCampaign />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/feedback" element={<Feedback />} />
+          <Route path="/add-product" element={<ProductManagement />} />
+          <Route path="/products" element={<ProductManagement />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

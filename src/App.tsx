@@ -12,7 +12,7 @@ import NotFound from "./pages/NotFound";
 import WelcomePage from "./components/WelcomePage";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
-import ProfileReact from "./pages/ProfileReact";
+import Profile from "./pages/Profile";
 import SocialCampaign from "./pages/SocialCampaign";
 import Chat from "./pages/Chat";
 import Feedback from "./pages/Feedback";

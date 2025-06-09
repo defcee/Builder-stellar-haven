@@ -13,6 +13,10 @@ import WelcomePageReact from "./components/WelcomePageReact";
 import AuthReact from "./pages/AuthReact";
 import DashboardReact from "./pages/DashboardReact";
 import ProfileReact from "./pages/ProfileReact";
+import SocialCampaign from "./pages/SocialCampaign";
+import Chat from "./pages/Chat";
+import Feedback from "./pages/Feedback";
+import ProductManagement from "./pages/ProductManagement";
 
 // Import mobile platform styles
 import "./styles/mobile-platform.css";

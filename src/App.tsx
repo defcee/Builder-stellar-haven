@@ -18,8 +18,7 @@ import Chat from "./pages/Chat";
 import Feedback from "./pages/Feedback";
 import ProductManagement from "./pages/ProductManagement";
 
-// Import mobile platform styles
-import "./styles/mobile-platform.css";
+// Mobile platform styles are now handled by TailwindCSS
 
 const queryClient = new QueryClient();
 

@@ -9,7 +9,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
 // Import the new Bizzleap React components
-import WelcomePageReact from "./components/WelcomePageReact";
+import WelcomePage from "./components/WelcomePage";
 import AuthReact from "./pages/AuthReact";
 import DashboardReact from "./pages/DashboardReact";
 import ProfileReact from "./pages/ProfileReact";

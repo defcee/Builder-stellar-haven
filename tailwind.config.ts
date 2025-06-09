@@ -62,6 +62,17 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Bizzleap brand colors - green and earthy tones
+        bizzleap: {
+          primary: "#16a34a", // Green 600
+          secondary: "#15803d", // Green 700
+          accent: "#22c55e", // Green 500
+          light: "#dcfce7", // Green 100
+          earth: "#92400e", // Amber 800
+          "earth-light": "#fef3c7", // Amber 100
+          brown: "#78716c", // Stone 500
+          "brown-light": "#f5f5f4", // Stone 100
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

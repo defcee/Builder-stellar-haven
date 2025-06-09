@@ -11,7 +11,7 @@ import NotFound from "./pages/NotFound";
 // Import the new Bizzleap React components
 import WelcomePage from "./components/WelcomePage";
 import Auth from "./pages/Auth";
-import DashboardReact from "./pages/DashboardReact";
+import Dashboard from "./pages/Dashboard";
 import ProfileReact from "./pages/ProfileReact";
 import SocialCampaign from "./pages/SocialCampaign";
 import Chat from "./pages/Chat";

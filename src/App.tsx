@@ -36,9 +36,9 @@ const App = () => (
           {/* New Bizzleap Mobile App Routes */}
           <Route path="/" element={<WelcomePage />} />
           <Route path="/welcome" element={<WelcomePage />} />
-          <Route path="/auth" element={<AuthReact />} />
-          <Route path="/login" element={<AuthReact />} />
-          <Route path="/register" element={<AuthReact />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/login" element={<Auth />} />
+          <Route path="/register" element={<Auth />} />
           <Route path="/dashboard" element={<DashboardReact />} />
           <Route path="/profile" element={<ProfileReact />} />
 

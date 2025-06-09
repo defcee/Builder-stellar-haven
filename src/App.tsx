@@ -39,7 +39,7 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/login" element={<Auth />} />
           <Route path="/register" element={<Auth />} />
-          <Route path="/dashboard" element={<DashboardReact />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<ProfileReact />} />
 
           {/* Redirect common routes */}

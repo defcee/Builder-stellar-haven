@@ -40,7 +40,7 @@ const App = () => (
           <Route path="/login" element={<Auth />} />
           <Route path="/register" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<ProfileReact />} />
+          <Route path="/profile" element={<Profile />} />
 
           {/* Redirect common routes */}
           <Route path="/home" element={<Navigate to="/dashboard" replace />} />

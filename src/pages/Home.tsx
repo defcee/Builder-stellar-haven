@@ -37,7 +37,7 @@ export function Home() {
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-cover bg-bottom bg-no-repeat opacity-90 md:bg-right-top"
-          style={{ backgroundImage: "url(/assets/hero-background.svg)" }}
+          style={{ backgroundImage: "url(/assets/hero-background.png)" }}
         />
         <div className="relative mx-auto max-w-6xl px-4 py-16 sm:py-24">
           <p className="inline-flex rounded-full bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-brand-dark shadow-card">

@@ -15,7 +15,7 @@ Digital marketplace and business storefront platform. This repository currently 
 3. Set `DATABASE_URL` in `.env` to your Neon connection string (include `sslmode=require`).
 4. Apply migrations: `npm run db:migrate`
 5. Start both servers: `npm run dev`
-   - Web: http://localhost:5173 (proxies `/api` to the API)
+   - Web: http://localhost:8080 (proxies `/api` to the API)
    - API: http://localhost:8787
 
 ## Scripts

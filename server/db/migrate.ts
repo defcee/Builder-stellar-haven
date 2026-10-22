@@ -1,12 +1,12 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { pool } from "./pool.js";
+import { closePool, getPool } from "./pool.js";
 
 const migrationsDir = path.resolve(process.cwd(), "migrations");
 
 export async function runMigrations(): Promise<string[]> {
-  const client = await pool.connect();
+  const client = await getPool().connect();
   const applied: string[] = [];
 
   try {
@@ -55,5 +55,5 @@ if (isEntrypoint) {
       console.error(error instanceof Error ? error.message : error);
       process.exitCode = 1;
     })
-    .finally(() => pool.end());
+    .finally(() => closePool());
 }

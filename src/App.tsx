@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Auth } from "./pages/Auth";
 import { Home } from "./pages/Home";
 import { Marketplace } from "./pages/Marketplace";
 
@@ -8,6 +9,8 @@ export function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/marketplace" element={<Marketplace />} />
+        <Route path="/sign-up" element={<Auth mode="sign-up" />} />
+        <Route path="/sign-in" element={<Auth mode="sign-in" />} />
         <Route
           path="*"
           element={

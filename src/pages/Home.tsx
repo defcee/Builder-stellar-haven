@@ -53,8 +53,14 @@ export function Home() {
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <Link
-              to="/marketplace"
+              to="/sign-up"
               className="inline-flex items-center justify-center rounded-xl bg-brand px-7 py-3.5 text-base font-semibold text-white shadow-card transition hover:bg-brand-dark focus:outline-none focus-visible:ring-4 focus-visible:ring-brand/30"
+            >
+              Get started for free
+            </Link>
+            <Link
+              to="/marketplace"
+              className="inline-flex items-center justify-center rounded-xl border border-brand bg-white px-7 py-3.5 text-base font-semibold text-brand-dark shadow-card transition hover:bg-brand/5 focus:outline-none focus-visible:ring-4 focus-visible:ring-brand/30"
             >
               Visit the marketplace
             </Link>

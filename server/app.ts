@@ -4,6 +4,7 @@ import helmet from "helmet";
 import { env } from "./config/env.js";
 import { errorHandler, notFound } from "./middleware/errors.js";
 import { healthRouter } from "./routes/health.js";
+import { marketplaceRouter } from "./routes/marketplace.js";
 
 export function createApp() {
   const app = express();
@@ -19,6 +20,7 @@ export function createApp() {
   app.use(express.json({ limit: "100kb" }));
 
   app.use("/api/v1/health", healthRouter);
+  app.use("/api/v1/marketplace", marketplaceRouter);
   app.use("/api/v1", notFound);
   app.use(errorHandler);
 

@@ -10,6 +10,11 @@ export default {
           dark: "#105C35",
           accent: "#35B86B",
         },
+        warm: {
+          cream: "#FFF7EA",
+          sun: "#F5A524",
+          clay: "#E0703A",
+        },
         surface: "#F5F8F5",
         ink: {
           DEFAULT: "#17231C",

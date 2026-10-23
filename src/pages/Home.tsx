@@ -39,14 +39,17 @@ const heroSlides = [
 const highlights = [
   {
     title: "Browse local products",
+    image: "/assets/browse-local-products.png",
     description: "Explore fresh produce and goods published by farmers and small businesses.",
   },
   {
     title: "Find services",
+    image: "/assets/find-services.png",
     description: "Discover service providers and see what they offer, where they operate, and how to reach them.",
   },
   {
     title: "Contact sellers directly",
+    image: "/assets/contact-sellers.png",
     description: "Call or email a seller from their listing without creating an account.",
   },
 ];
@@ -135,7 +138,7 @@ export function Home() {
         <ul className="mt-8 grid gap-6 md:grid-cols-3">
           {highlights.map((item) => (
             <li key={item.title} className="rounded-2xl border border-line bg-white p-6 shadow-card">
-              <ImagePlaceholder label={item.title} className="h-40 rounded-xl" />
+              <ImagePlaceholder label={item.title} src={item.image} className="h-40 rounded-xl" />
               <h3 className="mt-5 text-lg font-semibold text-ink">{item.title}</h3>
               <p className="mt-2 text-sm text-ink-muted">{item.description}</p>
             </li>

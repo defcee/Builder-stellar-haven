@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { SiteHeader } from "../components/SiteHeader";
 import { apiRequest } from "../lib/api";
@@ -6,6 +7,13 @@ import { apiRequest } from "../lib/api";
 interface ReadinessData {
   database: string;
 }
+
+const heroSlides = [
+  "/assets/heroimage_slide1.png",
+  "/assets/heroimage_slide2.png",
+  "/assets/heroimage_slide3.png",
+  "/assets/heroimage_slide4.png",
+];
 
 const highlights = [
   {
@@ -29,16 +37,44 @@ export function Home() {
     retry: 1,
   });
 
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % heroSlides.length);
+    }, 6000);
+    return () => window.clearInterval(timer);
+  }, []);
+
   return (
     <div className="min-h-screen bg-surface">
       <SiteHeader />
 
       <section className="relative overflow-hidden bg-gradient-to-br from-warm-cream via-white to-brand/10">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-cover bg-bottom bg-no-repeat opacity-90 md:bg-right-top"
-          style={{ backgroundImage: "url(/assets/hero-background.png)" }}
-        />
+        {heroSlides.map((src, index) => (
+          <div
+            key={src}
+            aria-hidden="true"
+            className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ${
+              index === activeSlide ? "opacity-90" : "opacity-0"
+            }`}
+            style={{ backgroundImage: `url(${src})` }}
+          />
+        ))}
+        <div className="absolute inset-x-0 bottom-4 z-10 flex justify-center gap-2">
+          {heroSlides.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              aria-label={`Show hero image ${index + 1}`}
+              aria-current={index === activeSlide}
+              onClick={() => setActiveSlide(index)}
+              className={`h-2.5 rounded-full transition-all ${
+                index === activeSlide ? "w-8 bg-white" : "w-2.5 bg-white/60 hover:bg-white"
+              }`}
+            />
+          ))}
+        </div>
         <div className="relative mx-auto max-w-6xl px-4 py-16 sm:py-24">
           <p className="inline-flex rounded-full bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-brand-dark shadow-card">
             Your business. Your storefront. Your next opportunity.

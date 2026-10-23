@@ -9,10 +9,30 @@ interface ReadinessData {
 }
 
 const heroSlides = [
-  "/assets/heroimage_slide1.png",
-  "/assets/heroimage_slide2.png",
-  "/assets/heroimage_slide3.png",
-  "/assets/heroimage_slide4.png",
+  {
+    image: "/assets/heroimage_slide1.png",
+    eyebrow: "For farmers",
+    title: "Sell your harvest to buyers nearby",
+    body: "List produce and farm services, describe your farm, set prices in naira, and show what is in stock. Buyers can find you in the marketplace and reach you by phone or email.",
+  },
+  {
+    image: "/assets/heroimage_slide2.png",
+    eyebrow: "For small businesses",
+    title: "Build a storefront customers can trust",
+    body: "Create a business profile with your logo, location, opening hours and contact details. Publish your products and services, and manage the listings that buyers see.",
+  },
+  {
+    image: "/assets/heroimage_slide3.png",
+    eyebrow: "For buyers",
+    title: "Find what you need and contact the seller",
+    body: "Browse listings without signing in, search by keyword, and compare prices in naira. Call or email a seller directly, and create an account to save favourites.",
+  },
+  {
+    image: "/assets/heroimage_slide4.png",
+    eyebrow: "One marketplace",
+    title: "Farmers, businesses and buyers in one place",
+    body: "Farmers and small businesses publish products and services, buyers discover and contact them, and administrators review listings and reports to keep the marketplace trustworthy.",
+  },
 ];
 
 const highlights = [
@@ -51,16 +71,20 @@ export function Home() {
       <SiteHeader />
 
       <section className="relative overflow-hidden bg-gradient-to-br from-warm-cream via-white to-brand/10">
-        {heroSlides.map((src, index) => (
+        {heroSlides.map((slide, index) => (
           <div
-            key={src}
+            key={slide.image}
             aria-hidden="true"
             className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ${
-              index === activeSlide ? "opacity-90" : "opacity-0"
+              index === activeSlide ? "opacity-100" : "opacity-0"
             }`}
-            style={{ backgroundImage: `url(${src})` }}
+            style={{ backgroundImage: `url(${slide.image})` }}
           />
         ))}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-white/40"
+        />
         <div className="absolute inset-x-0 bottom-4 z-10 flex justify-center gap-2">
           {heroSlides.map((_, index) => (
             <button
@@ -75,16 +99,15 @@ export function Home() {
             />
           ))}
         </div>
-        <div className="relative mx-auto max-w-6xl px-4 py-16 sm:py-24">
+        <div className="relative mx-auto max-w-6xl px-4 py-16 sm:py-24" aria-live="polite">
           <p className="inline-flex rounded-full bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-brand-dark shadow-card">
-            Your business. Your storefront. Your next opportunity.
+            {heroSlides[activeSlide].eyebrow}
           </p>
           <h1 className="mt-6 max-w-3xl text-4xl font-bold leading-tight text-ink sm:text-6xl">
-            Fresh opportunities for <span className="text-brand">farmers</span> and{" "}
-            <span className="text-warm-clay">small businesses</span>.
+            {heroSlides[activeSlide].title}
           </h1>
           <p className="mt-5 max-w-2xl text-base text-ink-muted sm:text-lg">
-            Discover products and services from local sellers, and reach them directly to start a conversation.
+            {heroSlides[activeSlide].body}
           </p>
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">

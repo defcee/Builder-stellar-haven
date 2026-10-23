@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ImagePlaceholder } from "../components/ImagePlaceholder";
 import { SiteHeader } from "../components/SiteHeader";
 import { apiRequest } from "../lib/api";
 
@@ -134,7 +135,7 @@ export function Home() {
         <ul className="mt-8 grid gap-6 md:grid-cols-3">
           {highlights.map((item) => (
             <li key={item.title} className="rounded-2xl border border-line bg-white p-6 shadow-card">
-              <span aria-hidden="true" className="block h-1.5 w-12 rounded-full bg-warm-sun" />
+              <ImagePlaceholder label={item.title} className="h-40 rounded-xl" />
               <h3 className="mt-5 text-lg font-semibold text-ink">{item.title}</h3>
               <p className="mt-2 text-sm text-ink-muted">{item.description}</p>
             </li>

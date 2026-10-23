@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
+import { ImagePlaceholder } from "../components/ImagePlaceholder";
 import { SiteHeader } from "../components/SiteHeader";
 import { apiRequest } from "../lib/api";
 import { formatPrice } from "../lib/currency";
@@ -135,13 +136,7 @@ function ListingCard({ listing }: { listing: MarketplaceListing }) {
 
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-card">
-      {listing.image_url ? (
-        <img src={listing.image_url} alt={listing.alt_text ?? listing.title} className="h-48 w-full object-cover" loading="lazy" />
-      ) : (
-        <div className="flex h-48 items-center justify-center bg-gradient-to-br from-warm-cream to-brand/10 text-sm font-semibold uppercase tracking-wide text-brand-dark">
-          {listing.listing_type === "service" ? "Service" : "Product"}
-        </div>
-      )}
+      <ImagePlaceholder label={listing.title} src={listing.image_url} className="h-48 rounded-none" />
 
       <div className="flex flex-1 flex-col p-5">
         <p className="text-xs font-semibold uppercase tracking-wide text-brand">{availabilityLabel[listing.availability_status]}</p>
@@ -153,7 +148,9 @@ function ListingCard({ listing }: { listing: MarketplaceListing }) {
           {listing.unit && <span className="text-sm font-normal text-ink-muted"> / {listing.unit}</span>}
         </p>
         {location && <p className="mt-1 text-sm text-ink-muted">{location}</p>}
-        {listing.business_name && <p className="mt-3 text-sm font-medium text-ink">Sold by {listing.business_name}</p>}
+        {listing.business_name && (
+          <ImagePlaceholder label={`Seller: ${listing.business_name}`} className="mt-4 h-20 rounded-xl" />
+        )}
 
         <div className="mt-auto pt-5">
           {phoneHref || emailHref ? (

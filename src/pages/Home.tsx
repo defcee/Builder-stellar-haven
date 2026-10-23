@@ -39,17 +39,17 @@ const heroSlides = [
 const highlights = [
   {
     title: "Browse local products",
-    image: "/assets/browse-local-products.png",
+    image: "/assets/image1.png",
     description: "Explore fresh produce and goods published by farmers and small businesses.",
   },
   {
     title: "Find services",
-    image: "/assets/find-services.png",
+    image: "/assets/image2.png",
     description: "Discover service providers and see what they offer, where they operate, and how to reach them.",
   },
   {
     title: "Contact sellers directly",
-    image: "/assets/contact-sellers.png",
+    image: "/assets/image3.png",
     description: "Call or email a seller from their listing without creating an account.",
   },
 ];

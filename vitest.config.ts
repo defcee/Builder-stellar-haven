@@ -7,6 +7,7 @@ export default defineConfig({
     include: ["server/**/*.test.ts", "src/**/*.test.tsx"],
     fileParallelism: false,
     maxWorkers: 1,
+    pool: "threads",
     coverage: {
       provider: "v8",
       include: [

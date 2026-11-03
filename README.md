@@ -35,7 +35,7 @@ Listing images are sent to the backend and uploaded to Cloudinary using a server
 | `npm run db:migrate` | Apply pending SQL files in `migrations/` |
 | `npm test` | Run Vitest test suites |
 | `npm test -- --coverage` | Run tests and enforce the 50% minimum line-coverage threshold |
-| `npm run lint` | Check formatting for test and test-infrastructure files |
+| `npm run lint` | Check formatting for test and CI/Compose configuration files |
 
 ## Testing
 

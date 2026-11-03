@@ -20,7 +20,7 @@
     "db:check": "tsx server/test-db.js",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "lint": "prettier --check \"server/routes/__tests__/**/*.test.ts\" \"server/lib/**/*.ts\" \"server/middleware/requestId.ts\" \"server/middleware/__tests__/**/*.test.ts\" \"src/pages/__tests__/**/*.test.tsx\" \"vitest.config.ts\"",
+    "lint": "prettier --check \"server/routes/__tests__/**/*.test.ts\" \"server/lib/**/*.ts\" \"server/middleware/requestId.ts\" \"server/middleware/__tests__/**/*.test.ts\" \"src/pages/__tests__/**/*.test.tsx\" \"vitest.config.ts\" \".github/**/*.yml\" \"docker-compose.yml\"",
     "preview": "vite preview"
   },
   "dependencies": {

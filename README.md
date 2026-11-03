@@ -10,7 +10,7 @@ BizzLeap is a local-products marketplace connecting farmers, small businesses, a
 
 ## Local setup
 
-1. Install dependencies: `npm install`
+1. Install the locked dependencies: `npm ci`
 2. Copy `.env.example` to `.env` (PowerShell: `Copy-Item .env.example .env`).
 3. Set `DATABASE_URL` in `.env` to your PostgreSQL connection string. For Neon, use `sslmode=verify-full` for explicit certificate and hostname verification.
 4. Verify the database connection: `npm run db:check`
@@ -34,6 +34,33 @@ Listing images are sent to the backend and uploaded to Cloudinary using a server
 | `npm run db:check` | Verify PostgreSQL connectivity and execute a test query |
 | `npm run db:migrate` | Apply pending SQL files in `migrations/` |
 | `npm test` | Run Vitest test suites |
+| `npm test -- --coverage` | Run tests and enforce the 50% minimum line-coverage threshold |
+| `npm run lint` | Check formatting for test and test-infrastructure files |
+
+## Testing
+
+Tests run without Neon, PostgreSQL, or Cloudinary credentials. Route tests replace the PostgreSQL pool with an isolated in-memory test double; page tests mock API responses. Run the suite and coverage gate with:
+
+```sh
+npm ci
+npm test
+npm test -- --coverage
+npm run lint
+npm run typecheck
+npm run build
+```
+
+GitHub Actions runs lint, type-checking, the production build, coverage-gated tests, and a production dependency audit on every push and pull request. Dependabot checks npm dependencies weekly.
+
+`npm audit` currently reports two moderate React Router advisories affecting the installed v6 line. npm offers a fix through a major upgrade to v7.18.5; that breaking upgrade is documented rather than applied without a separate compatibility review. CI fails on high-severity or critical advisories.
+
+To start the app and a local PostgreSQL database together, run:
+
+```sh
+docker compose up --build
+```
+
+Open http://localhost:8080. PostgreSQL is initialized from `database/schema.sql`; the app applies subsequent migrations when it starts. The local Compose password is for development only. Remove the containers and reset the database volume with `docker compose down -v`.
 
 ## Environment variables
 

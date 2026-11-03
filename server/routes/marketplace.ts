@@ -3,6 +3,7 @@ import { Router } from "express";
 import { z } from "zod";
 import { getPool } from "../db/pool.js";
 import { HttpError } from "../middleware/errors.js";
+import { logger } from "../lib/logger.js";
 import { requireUser } from "./auth.js";
 
 export const marketplaceRouter = Router();
@@ -200,9 +201,12 @@ marketplaceRouter.post("/listings", requireUser, async (request, response) => {
     try {
       await client.query("ROLLBACK");
     } catch (rollbackError) {
-      console.error("Listing creation rollback failed:", rollbackError instanceof Error ? rollbackError.message : "unknown error");
+      logger.error(
+        { requestId: response.locals.requestId, err: rollbackError },
+        "Listing creation rollback failed",
+      );
     }
-    console.error("Listing creation failed:", error instanceof Error ? error.message : "unknown error");
+    logger.error({ requestId: response.locals.requestId, err: error }, "Listing creation failed");
     throw new HttpError(503, "We could not publish this listing. Please try again.");
   } finally {
     client.release();
@@ -302,13 +306,16 @@ marketplaceRouter.post("/listings/:slug/reviews", requireUser, async (request, r
     try {
       await client.query("ROLLBACK");
     } catch (rollbackError) {
-      console.error("Review submission rollback failed:", rollbackError instanceof Error ? rollbackError.message : "unknown error");
+      logger.error(
+        { requestId: response.locals.requestId, err: rollbackError },
+        "Review submission rollback failed",
+      );
     }
     if (error instanceof HttpError) throw error;
     if (error instanceof Error && "code" in error && error.code === "23505") {
       throw new HttpError(409, "You have already reviewed this listing");
     }
-    console.error("Review submission failed:", error instanceof Error ? error.message : "unknown error");
+    logger.error({ requestId: response.locals.requestId, err: error }, "Review submission failed");
     throw new HttpError(503, "We could not submit your review");
   } finally {
     client.release();

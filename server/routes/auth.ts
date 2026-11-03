@@ -4,6 +4,7 @@ import { Router } from "express";
 import { z } from "zod";
 import { getPool } from "../db/pool.js";
 import { HttpError } from "../middleware/errors.js";
+import { logger } from "../lib/logger.js";
 
 const SESSION_COOKIE = "bizzleap_session";
 const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
@@ -160,6 +161,7 @@ authRouter.post("/sign-up", async (request, response) => {
     if (error instanceof Error && "code" in error && error.code === "23505") {
       throw new HttpError(409, "An account with this email already exists");
     }
+    logger.error({ requestId: response.locals.requestId, err: error }, "Account registration failed");
     throw new HttpError(503, "We could not create your account right now. Please try again.");
   } finally {
     client.release();

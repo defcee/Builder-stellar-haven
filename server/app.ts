@@ -4,6 +4,7 @@ import helmet from "helmet";
 import path from "node:path";
 import { env } from "./config/env.js";
 import { errorHandler, notFound } from "./middleware/errors.js";
+import { requestId } from "./middleware/requestId.js";
 import { authRouter } from "./routes/auth.js";
 import { healthRouter } from "./routes/health.js";
 import { marketplaceRouter } from "./routes/marketplace.js";
@@ -16,6 +17,7 @@ export function createApp() {
   const app = express();
 
   app.disable("x-powered-by");
+  app.use(requestId);
   app.use(helmet());
   app.use(
     cors({

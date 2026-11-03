@@ -1,5 +1,6 @@
 import pg from "pg";
 import { env } from "../config/env.js";
+import { logger } from "../lib/logger.js";
 
 let pool: pg.Pool | undefined;
 
@@ -30,7 +31,7 @@ export function getPool(): pg.Pool {
     });
 
     pool.on("error", (error) => {
-      console.error("Unexpected PostgreSQL pool error:", error.message);
+      logger.error({ err: error }, "Unexpected PostgreSQL pool error");
     });
   }
 

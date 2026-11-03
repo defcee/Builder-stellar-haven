@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { env } from "../config/env.js";
+import { logger } from "../lib/logger.js";
 
 export class HttpError extends Error {
   constructor(
@@ -30,11 +30,7 @@ export function errorHandler(error: unknown, _req: Request, res: Response, _next
     return;
   }
 
-  if (env.NODE_ENV === "production") {
-    console.error("Unhandled error:", error instanceof Error ? error.message : "unknown");
-  } else {
-    console.error(error);
-  }
+  logger.error({ requestId: res.locals.requestId, err: error }, "Unhandled request error");
 
   res.status(500).json({ success: false, message: "Something went wrong. Please try again." });
 }

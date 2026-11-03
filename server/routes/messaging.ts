@@ -2,6 +2,7 @@ import { Router } from "express";
 import { z } from "zod";
 import { getPool } from "../db/pool.js";
 import { HttpError } from "../middleware/errors.js";
+import { logger } from "../lib/logger.js";
 import { requireUser } from "./auth.js";
 
 export const messagingRouter = Router();
@@ -90,10 +91,13 @@ messagingRouter.post("/conversations", requireUser, async (request, response) =>
     try {
       await client.query("ROLLBACK");
     } catch (rollbackError) {
-      console.error("Conversation creation rollback failed:", rollbackError instanceof Error ? rollbackError.message : "unknown error");
+      logger.error(
+        { requestId: response.locals.requestId, err: rollbackError },
+        "Conversation creation rollback failed",
+      );
     }
     if (error instanceof HttpError) throw error;
-    console.error("Conversation creation failed:", error instanceof Error ? error.message : "unknown error");
+    logger.error({ requestId: response.locals.requestId, err: error }, "Conversation creation failed");
     throw new HttpError(503, "We could not start this conversation");
   } finally {
     client.release();
@@ -162,10 +166,13 @@ messagingRouter.post("/conversations/:id/messages", requireUser, async (request,
     try {
       await client.query("ROLLBACK");
     } catch (rollbackError) {
-      console.error("Message send rollback failed:", rollbackError instanceof Error ? rollbackError.message : "unknown error");
+      logger.error(
+        { requestId: response.locals.requestId, err: rollbackError },
+        "Message send rollback failed",
+      );
     }
     if (error instanceof HttpError) throw error;
-    console.error("Message send failed:", error instanceof Error ? error.message : "unknown error");
+    logger.error({ requestId: response.locals.requestId, err: error }, "Message send failed");
     throw new HttpError(503, "We could not send your message");
   } finally {
     client.release();

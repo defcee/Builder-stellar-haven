@@ -6,7 +6,11 @@ import { SiteHeader } from "../components/SiteHeader";
 import { apiRequest } from "../lib/api";
 
 interface ReadinessData {
-  database: string;
+  database: {
+    status: "ok";
+    connection: "connected";
+    query: "ok";
+  };
 }
 
 const heroSlides = [
@@ -19,20 +23,20 @@ const heroSlides = [
   {
     image: "/assets/heroimage_slide2.png",
     eyebrow: "For small businesses",
-    title: "Build a storefront customers can trust",
-    body: "Create a business profile with your logo, location, opening hours and contact details. Publish your products and services, and manage the listings that buyers see.",
+    title: "Bring your products and services to more buyers",
+    body: "Publish products and services, set prices and availability, and manage the listings buyers discover in the marketplace.",
   },
   {
     image: "/assets/heroimage_slide3.png",
     eyebrow: "For buyers",
     title: "Find what you need and contact the seller",
-    body: "Browse listings without signing in, search by keyword, and compare prices in naira. Call or email a seller directly, and create an account to save favourites.",
+    body: "Browse listings without signing in, search by keyword, and compare prices in naira. Call or email a seller directly from a listing.",
   },
   {
     image: "/assets/heroimage_slide4.png",
     eyebrow: "One marketplace",
     title: "Farmers, businesses and buyers in one place",
-    body: "Farmers and small businesses publish products and services, buyers discover and contact them, and administrators review listings and reports to keep the marketplace trustworthy.",
+    body: "Farmers and small businesses publish products and services, and buyers discover local offers and contact sellers directly.",
   },
 ];
 
@@ -56,8 +60,8 @@ const highlights = [
 
 export function Home() {
   const readiness = useQuery({
-    queryKey: ["health", "ready"],
-    queryFn: () => apiRequest<ReadinessData>("/health/ready"),
+    queryKey: ["health", "database"],
+    queryFn: () => apiRequest<ReadinessData>("/health/db"),
     retry: 1,
   });
 
@@ -148,11 +152,11 @@ export function Home() {
 
       <footer className="border-t border-line bg-white">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 text-sm text-ink-muted sm:flex-row sm:items-center sm:justify-between">
-          <p>BizzLeap SME</p>
-          <p className={readiness.isSuccess ? "text-success" : readiness.isError ? "text-danger" : ""}>
-            {readiness.isPending && "Checking service status..."}
-            {readiness.isSuccess && "Service is online."}
-            {readiness.isError && `${readiness.error.message}`}
+          <p>BizzLeap</p>
+          <p className={readiness.isSuccess ? "text-success" : readiness.isError ? "text-danger" : ""} role="status">
+            {readiness.isPending && "Checking database status..."}
+            {readiness.isSuccess && "Marketplace database is online."}
+            {readiness.isError && `Marketplace status unavailable: ${readiness.error.message}`}
           </p>
         </div>
       </footer>

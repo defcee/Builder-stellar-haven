@@ -1,7 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Auth } from "./pages/Auth";
+import { CreateListing } from "./pages/CreateListing";
+import { Dashboard } from "./pages/Dashboard";
 import { Home } from "./pages/Home";
+import { ListingDetail } from "./pages/ListingDetail";
 import { Marketplace } from "./pages/Marketplace";
+import { Messages } from "./pages/Messages";
+import { Profile } from "./pages/Profile";
+import { Storefront } from "./pages/Storefront";
 
 export function App() {
   return (
@@ -9,8 +15,14 @@ export function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/marketplace" element={<Marketplace />} />
+        <Route path="/marketplace/:slug" element={<ListingDetail />} />
+        <Route path="/storefront/:slug" element={<Storefront />} />
         <Route path="/sign-up" element={<Auth mode="sign-up" />} />
         <Route path="/sign-in" element={<Auth mode="sign-in" />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/messages" element={<Messages />} />
+        <Route path="/listings/new" element={<CreateListing />} />
         <Route
           path="*"
           element={

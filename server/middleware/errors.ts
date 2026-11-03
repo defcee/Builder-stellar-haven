@@ -25,6 +25,11 @@ export function errorHandler(error: unknown, _req: Request, res: Response, _next
     return;
   }
 
+  if (typeof error === "object" && error !== null && "type" in error && error.type === "entity.too.large") {
+    res.status(413).json({ success: false, message: "The uploaded image must not exceed 5 MB" });
+    return;
+  }
+
   if (env.NODE_ENV === "production") {
     console.error("Unhandled error:", error instanceof Error ? error.message : "unknown");
   } else {

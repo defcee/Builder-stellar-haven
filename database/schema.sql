@@ -1,5 +1,5 @@
--- BizzLeap SME full schema for a fresh PostgreSQL / Neon database.
--- Equivalent to running migrations/0001, 0002 and 0003 in order.
+-- BizzLeap full schema for a fresh PostgreSQL / Neon database.
+-- Equivalent to running migrations/0001 through 0005 in order.
 -- Use either this file or the migration runner on an empty database, not both.
 
 CREATE OR REPLACE FUNCTION set_updated_at() RETURNS trigger AS $$
@@ -17,6 +17,7 @@ CREATE TABLE users (
   role               TEXT NOT NULL CHECK (role IN ('farmer', 'business', 'buyer', 'admin')),
   country_code       CHAR(2) NOT NULL CHECK (country_code ~ '^[A-Z]{2}$'),
   preferred_language TEXT NOT NULL DEFAULT 'en',
+  preferred_currency CHAR(3) NOT NULL DEFAULT 'NGN' CHECK (preferred_currency ~ '^[A-Z]{3}$'),
   phone              TEXT CHECK (phone IS NULL OR char_length(phone) BETWEEN 7 AND 20),
   avatar_url         TEXT,
   email_verified_at  TIMESTAMPTZ,
@@ -39,6 +40,7 @@ CREATE TABLE sessions (
   updated_at   TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE INDEX sessions_user_id_idx ON sessions (user_id);
+CREATE INDEX sessions_active_expiry_idx ON sessions (expires_at) WHERE revoked_at IS NULL;
 
 CREATE TABLE email_verification_tokens (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -75,6 +77,26 @@ CREATE TABLE farmer_profiles (
   updated_at                  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE TABLE user_locations (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id         UUID NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  label           TEXT NOT NULL CHECK (char_length(label) BETWEEN 1 AND 80),
+  recipient_name  TEXT CHECK (char_length(recipient_name) <= 120),
+  address_line_1  TEXT NOT NULL CHECK (char_length(address_line_1) BETWEEN 1 AND 200),
+  address_line_2  TEXT CHECK (char_length(address_line_2) <= 200),
+  city            TEXT NOT NULL CHECK (char_length(city) BETWEEN 1 AND 100),
+  region          TEXT CHECK (char_length(region) <= 100),
+  postal_code     TEXT CHECK (char_length(postal_code) <= 20),
+  country_code    CHAR(2) NOT NULL CHECK (country_code ~ '^[A-Z]{2}$'),
+  latitude        NUMERIC(9, 6) CHECK (latitude BETWEEN -90 AND 90),
+  longitude       NUMERIC(9, 6) CHECK (longitude BETWEEN -180 AND 180),
+  is_default      BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX user_locations_user_idx ON user_locations (user_id);
+CREATE UNIQUE INDEX user_locations_one_default_idx ON user_locations (user_id) WHERE is_default;
+
 CREATE TABLE categories (
   id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name         TEXT NOT NULL CHECK (char_length(name) BETWEEN 2 AND 80),
@@ -89,6 +111,15 @@ CREATE TABLE categories (
 );
 CREATE INDEX categories_parent_id_idx ON categories (parent_id);
 CREATE INDEX categories_active_idx ON categories (is_active);
+INSERT INTO categories (name, slug, description) VALUES
+  ('Fresh produce', 'fresh-produce', 'Fresh fruits, vegetables, and farm produce.'),
+  ('Grains and staples', 'grains-staples', 'Grains, pulses, roots, and everyday food staples.'),
+  ('Livestock and poultry', 'livestock-poultry', 'Livestock, poultry, eggs, and related products.'),
+  ('Farm supplies', 'farm-supplies', 'Tools, equipment, seeds, and agricultural supplies.'),
+  ('Food and beverages', 'food-beverages', 'Packaged foods, prepared goods, and beverages.'),
+  ('Home and personal care', 'home-personal-care', 'Household goods and personal care products.'),
+  ('Professional services', 'professional-services', 'Business, repair, logistics, and other local services.')
+ON CONFLICT (slug) DO NOTHING;
 
 CREATE TABLE business_profiles (
   id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -125,6 +156,8 @@ CREATE TABLE listings (
   slug                TEXT NOT NULL UNIQUE CHECK (slug ~ '^[a-z0-9]+(-[a-z0-9]+)*$'),
   description         TEXT CHECK (char_length(description) <= 5000),
   listing_type        TEXT NOT NULL CHECK (listing_type IN ('product', 'service')),
+  product_type        TEXT,
+  category_label      TEXT CHECK (category_label IS NULL OR char_length(category_label) <= 100),
   price               NUMERIC(14, 2) NOT NULL CHECK (price >= 0),
   currency_code       CHAR(3) NOT NULL CHECK (currency_code ~ '^[A-Z]{3}$'),
   unit                TEXT CHECK (char_length(unit) <= 40),
@@ -156,6 +189,40 @@ CREATE INDEX listings_location_idx ON listings (publication_status, country_code
 CREATE INDEX listings_search_idx ON listings USING GIN (search_vector);
 CREATE INDEX listings_tags_idx ON listings USING GIN (tags);
 
+CREATE TABLE orders (
+  id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  buyer_id             UUID NOT NULL REFERENCES users (id) ON DELETE RESTRICT,
+  seller_id            UUID NOT NULL REFERENCES users (id) ON DELETE RESTRICT,
+  shipping_location_id UUID REFERENCES user_locations (id) ON DELETE SET NULL,
+  shipping_address     JSONB,
+  status               TEXT NOT NULL DEFAULT 'pending'
+    CHECK (status IN ('pending', 'confirmed', 'processing', 'shipped', 'completed', 'cancelled')),
+  payment_status       TEXT NOT NULL DEFAULT 'pending'
+    CHECK (payment_status IN ('pending', 'paid', 'failed', 'refunded')),
+  currency_code        CHAR(3) NOT NULL CHECK (currency_code ~ '^[A-Z]{3}$'),
+  subtotal             NUMERIC(14, 2) NOT NULL CHECK (subtotal >= 0),
+  total                NUMERIC(14, 2) NOT NULL CHECK (total >= 0),
+  created_at           TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at           TIMESTAMPTZ NOT NULL DEFAULT now(),
+  CHECK (buyer_id <> seller_id)
+);
+CREATE INDEX orders_buyer_created_idx ON orders (buyer_id, created_at DESC);
+CREATE INDEX orders_seller_created_idx ON orders (seller_id, created_at DESC);
+CREATE INDEX orders_status_created_idx ON orders (status, created_at DESC);
+
+CREATE TABLE order_items (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  order_id              UUID NOT NULL REFERENCES orders (id) ON DELETE CASCADE,
+  listing_id            UUID REFERENCES listings (id) ON DELETE SET NULL,
+  listing_title         TEXT NOT NULL CHECK (char_length(listing_title) BETWEEN 1 AND 160),
+  quantity              INTEGER NOT NULL CHECK (quantity > 0),
+  unit_price            NUMERIC(14, 2) NOT NULL CHECK (unit_price >= 0),
+  line_total            NUMERIC(14, 2) NOT NULL CHECK (line_total >= 0 AND line_total = unit_price * quantity),
+  created_at            TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX order_items_order_idx ON order_items (order_id);
+CREATE INDEX order_items_listing_idx ON order_items (listing_id);
+
 CREATE TABLE listing_images (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   listing_id  UUID NOT NULL REFERENCES listings (id) ON DELETE CASCADE,
@@ -179,6 +246,8 @@ CREATE TABLE conversations (
   updated_at          TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE INDEX conversations_creator_idx ON conversations (created_by_user_id);
+CREATE INDEX conversations_listing_creator_idx ON conversations (listing_id, created_by_user_id)
+  WHERE listing_id IS NOT NULL;
 
 CREATE TABLE conversation_participants (
   conversation_id UUID NOT NULL REFERENCES conversations (id) ON DELETE CASCADE,
@@ -331,7 +400,8 @@ DECLARE
 BEGIN
   FOREACH t IN ARRAY ARRAY[
     'users', 'sessions', 'email_verification_tokens', 'password_reset_tokens',
-    'farmer_profiles', 'categories', 'business_profiles', 'listings', 'listing_images',
+    'farmer_profiles', 'user_locations', 'categories', 'business_profiles', 'listings',
+    'orders', 'listing_images',
     'conversations', 'messages', 'reviews', 'notifications', 'reports',
     'contact_messages', 'platform_settings', 'social_campaigns'
   ] LOOP

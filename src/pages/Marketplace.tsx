@@ -4,26 +4,13 @@ import { Link } from "react-router-dom";
 import { ImagePlaceholder } from "../components/ImagePlaceholder";
 import { SiteHeader } from "../components/SiteHeader";
 import { apiRequest } from "../lib/api";
+import type { MarketplaceListing } from "../lib/marketplace";
 import { formatPrice } from "../lib/currency";
 
-interface MarketplaceListing {
+interface MarketplaceCategory {
   id: string;
+  name: string;
   slug: string;
-  title: string;
-  description: string | null;
-  listing_type: "product" | "service";
-  price: string;
-  currency_code: string;
-  unit: string | null;
-  availability_status: "available" | "limited" | "unavailable";
-  region: string | null;
-  city: string | null;
-  image_url: string | null;
-  alt_text: string | null;
-  business_name: string | null;
-  business_slug: string | null;
-  public_email: string | null;
-  public_phone: string | null;
 }
 
 const availabilityLabel: Record<MarketplaceListing["availability_status"], string> = {
@@ -35,13 +22,23 @@ const availabilityLabel: Record<MarketplaceListing["availability_status"], strin
 export function Marketplace() {
   const [draftSearch, setDraftSearch] = useState("");
   const [search, setSearch] = useState("");
+  const [type, setType] = useState("");
+  const [category, setCategory] = useState("");
+
+  const categories = useQuery({
+    queryKey: ["marketplace", "categories"],
+    queryFn: () => apiRequest<{ categories: MarketplaceCategory[] }>("/marketplace/categories"),
+  });
 
   const listings = useQuery({
-    queryKey: ["marketplace", "listings", search],
-    queryFn: () =>
-      apiRequest<{ listings: MarketplaceListing[] }>(
-        `/marketplace/listings${search ? `?q=${encodeURIComponent(search)}` : ""}`,
-      ),
+    queryKey: ["marketplace", "listings", search, type, category],
+    queryFn: () => {
+      const params = new URLSearchParams();
+      if (search) params.set("q", search);
+      if (type) params.set("type", type);
+      if (category) params.set("category", category);
+      return apiRequest<{ listings: MarketplaceListing[] }>(`/marketplace/listings?${params.toString()}`);
+    },
   });
 
   function handleSearch(event: FormEvent<HTMLFormElement>) {
@@ -60,10 +57,8 @@ export function Marketplace() {
             <p className="mt-2 text-ink-muted">Browse published products and services, then contact the seller directly.</p>
           </div>
 
-          <form onSubmit={handleSearch} role="search" className="flex w-full gap-2 md:max-w-md">
-            <label htmlFor="marketplace-search" className="sr-only">
-              Search products and services
-            </label>
+          <form onSubmit={handleSearch} role="search" className="grid w-full gap-2 sm:grid-cols-[1fr_auto_auto] md:max-w-2xl">
+            <label htmlFor="marketplace-search" className="sr-only">Search products and services</label>
             <input
               id="marketplace-search"
               type="search"
@@ -71,11 +66,28 @@ export function Marketplace() {
               onChange={(event) => setDraftSearch(event.target.value)}
               placeholder="Search products or services"
               maxLength={100}
-              className="min-w-0 flex-1 rounded-xl border border-line bg-white px-4 py-2.5 text-ink shadow-card focus:border-brand focus:outline-none"
+              className="min-w-0 rounded-lg border border-line bg-white px-4 py-2.5 text-ink focus:border-brand focus:outline-none"
             />
-            <button type="submit" className="rounded-xl bg-brand px-5 py-2.5 font-semibold text-white hover:bg-brand-dark">
-              Search
-            </button>
+            <label className="sr-only" htmlFor="listing-type-filter">Filter by type</label>
+            <select id="listing-type-filter" value={type} onChange={(event) => setType(event.target.value)} className="rounded-lg border border-line bg-white px-3 py-2.5 text-ink">
+              <option value="">All offers</option>
+              <option value="product">Products</option>
+              <option value="service">Services</option>
+            </select>
+            <button type="submit" className="rounded-lg bg-brand px-5 py-2.5 font-semibold text-white hover:bg-brand-dark">Search</button>
+            <div className="sm:col-span-3">
+              <label className="sr-only" htmlFor="category-filter">Filter by category</label>
+              <select id="category-filter" value={category} onChange={(event) => setCategory(event.target.value)} disabled={categories.isPending || categories.isError} className="w-full rounded-lg border border-line bg-white px-3 py-2.5 text-ink disabled:opacity-60">
+                <option value="">All categories</option>
+                {categories.data?.categories.map((item) => <option key={item.id} value={item.slug}>{item.name}</option>)}
+              </select>
+              {categories.isError && (
+                <p role="alert" className="mt-2 text-sm text-danger">
+                  Categories could not be loaded.{" "}
+                  <button type="button" onClick={() => categories.refetch()} className="font-semibold underline">Try again</button>
+                </p>
+              )}
+            </div>
           </form>
         </div>
 
@@ -98,10 +110,10 @@ export function Marketplace() {
           {listings.isSuccess && listings.data.listings.length === 0 && (
             <div className="rounded-2xl bg-white p-8 text-center shadow-card">
               <h2 className="text-lg font-semibold text-ink">
-                {search ? "No listings match your search" : "No listings have been published yet"}
+                {search || category || type ? "No listings match these filters" : "No listings have been published yet"}
               </h2>
               <p className="mt-2 text-ink-muted">
-                {search ? "Try different words or clear the search." : "Check back soon as sellers publish their products."}
+                {search || category || type ? "Try changing or clearing the filters." : "Check back soon as sellers publish their products."}
               </p>
             </div>
           )}
@@ -139,6 +151,9 @@ function ListingCard({ listing }: { listing: MarketplaceListing }) {
       <ImagePlaceholder label={listing.title} src={listing.image_url} className="h-48 rounded-none" />
 
       <div className="flex flex-1 flex-col p-5">
+        <p className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
+          {listing.category_label ?? listing.category_name ?? listing.product_type?.replace(/_/g, " ") ?? (listing.listing_type === "product" ? "Product" : "Service")}
+        </p>
         <p className="text-xs font-semibold uppercase tracking-wide text-brand">{availabilityLabel[listing.availability_status]}</p>
         <h2 className="mt-1 text-lg font-semibold text-ink">{listing.title}</h2>
         {listing.description && <p className="mt-2 line-clamp-2 text-sm text-ink-muted">{listing.description}</p>}
@@ -148,27 +163,19 @@ function ListingCard({ listing }: { listing: MarketplaceListing }) {
           {listing.unit && <span className="text-sm font-normal text-ink-muted"> / {listing.unit}</span>}
         </p>
         {location && <p className="mt-1 text-sm text-ink-muted">{location}</p>}
-        {listing.business_name && (
-          <ImagePlaceholder label={`Seller: ${listing.business_name}`} className="mt-4 h-20 rounded-xl" />
-        )}
+        <p className="mt-3 text-sm text-ink-muted">
+          From{" "}
+          {listing.business_name && listing.business_slug
+            ? <Link to={`/storefront/${listing.business_slug}`} className="font-semibold text-brand hover:underline">{listing.business_name}</Link>
+            : listing.business_name ?? listing.seller_name}
+        </p>
 
         <div className="mt-auto pt-5">
-          {phoneHref || emailHref ? (
-            <div className="flex flex-wrap gap-2">
-              {phoneHref && (
-                <a href={phoneHref} className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark">
-                  Call seller
-                </a>
-              )}
-              {emailHref && (
-                <a href={emailHref} className="rounded-lg border border-brand px-4 py-2 text-sm font-semibold text-brand hover:bg-brand/5">
-                  Email seller
-                </a>
-              )}
-            </div>
-          ) : (
-            <p className="text-sm text-ink-muted">This seller has not published contact details.</p>
-          )}
+          <div className="flex flex-wrap gap-2">
+            <Link to={`/marketplace/${listing.slug}`} className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark">View listing</Link>
+            {phoneHref && <a href={phoneHref} aria-label={`Call ${listing.business_name ?? listing.seller_name}`} className="rounded-lg border border-line px-4 py-2 text-sm font-semibold text-ink hover:border-brand">Call</a>}
+            {emailHref && <a href={emailHref} aria-label={`Email ${listing.business_name ?? listing.seller_name}`} className="rounded-lg border border-line px-4 py-2 text-sm font-semibold text-ink hover:border-brand">Email</a>}
+          </div>
         </div>
       </div>
     </article>
